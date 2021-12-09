@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<otrs_package version="1.0">
+    <Name>OAuth2ForEmailAccounts</Name>
+    <Version>6.0.5</Version>
+    <Framework>10.0.x</Framework>
+    <Vendor>IO Architect, Inc. - ITSUKUSHIMA</Vendor>
+    <URL>http://www.io-architect.com/</URL>
+    <License>GPL v3</License>
+    <ChangeLog Version="6.0.0" Date="2021-06-15 10:00:00">Initial Version</ChangeLog>
+    <ChangeLog Version="6.0.5" Date="2021-07-06 16:30:00">バグ修正</ChangeLog>
+    <Description Lang="jp">メール取得のOAuth2対応</Description>
+    <IntroInstall Type="post" Lang="jp" Title="Thank you!">
+<![CDATA[
+将来Gmail及びMicrosoft365ではメール取得時の認証にOAuth2が必須となり、現状のパスワード認証が無効化されます。<br/>
+本パッケージではOAuth2認証機能を提供します。
+
+]]>
+    </IntroInstall>
+    <ModuleRequired Version="0.18">LWP::Authen::OAuth2</ModuleRequired>
+    <BuildDate>?</BuildDate>
+    <BuildHost>lab.io-architect.com</BuildHost>
+    <PackageMerge Name="OAuthMail" TargetVersion="6.0.0"></PackageMerge>
+    <Filelist>
+        <File Permission="664" Location="Custom/Kernel/Output/HTML/Templates/Standard/AdminMailAccount.tt"></File>
+        <File Permission="664" Location="Custom/Kernel/Modules/AdminMailAccount.pm"></File>
+        <File Permission="664" Location="Custom/Kernel/System/MailAccount.pm"></File>
+        <File Permission="664" Location="Kernel/System/MailAccount/IMAPGmail.pm"></File>
+        <File Permission="664" Location="Kernel/System/MailAccount/POPGmail.pm"></File>
+        <File Permission="664" Location="Kernel/System/MailAccount/IMAPExchange.pm"></File>
+        <File Permission="664" Location="Kernel/System/MailAccount/POPExchange.pm"></File>
+        <File Permission="664" Location="var/httpd/htdocs/js/Core.Agent.Admin.MailAccount.js"></File>
+        <File Permission="664" Location="Kernel/System/OAuth.pm"></File>
+        <File Permission="775" Location="bin/cgi-bin/accesstoken.pl"></File>
+    </Filelist>
+    <DatabaseInstall>
+        <TableCreate Name="oauth_token">
+            <Column Name="mail_account_id" Required="true" PrimaryKey="true" Type="BIGINT" />
+            <Column Name="auth_site" Required="true" Size="250" Type="VARCHAR" />
+            <Column Name="client_id" Required="true" Type="TEXT" />
+            <Column Name="client_secret" Required="true" Type="TEXT" />
+            <Column Name="token_string" Required="false" Type="TEXT" />
+            <Column Name="session_id" Required="false" Type="TEXT" />
+            <Column Name="auth_url" Required="true" Type="TEXT" />
+            <Column Name="token_url" Required="true" Type="TEXT" />
+
+            <Column Name="create_time" Required="true" Type="DATETIME" />
+            <Column Name="create_by" Required="true" Type="INT" />
+            <Column Name="change_time" Required="true" Type="DATETIME" />
+            <Column Name="change_by" Required="true" Type="INT" />
+        </TableCreate>
+    </DatabaseInstall>
+</otrs_package>
